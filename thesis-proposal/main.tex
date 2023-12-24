@@ -1,0 +1,95 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{xcolor}
+\usepackage[colorlinks=true, 
+            linkcolor=blue,
+            citecolor=blue,
+            pdftitle={Master Thesis Proposal}]{hyperref}
+
+\title{
+    \textbf{Master Thesis Proposal}\\
+    ???
+}
+\author{Advisor: }
+\date{\today}
+
+\setlength{\parindent}{0pt}
+\linespread{1.25}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Motivation \& Problem Statement}
+
+\textcolor{red}{Model checking vs test, what is it an over approx, beeccause I know it's cause and its not minimal?, what to do with other mechanism}
+
+In any program there is a bug, and this bug can be of two types, determnistic or non deterministic. The deeteerministc one is easy to to debug, but the more problematic are the non deterministic. Those kind of bug can pass a test, and without any change can fail the test, and those kind of bugs are very hard to find and also problematic.
+
+Thus, we want to find a way in which we can determin the occurence of succh a bug, and also try to fix it.
+
+\newpage
+
+\section{Aim of the Work}
+
+The aim of this work is to provide a tool that giving a program in C++ can determine the cause of the Heisenbugs.
+
+In plus, we also incclude a Coq formalization of the theeory underlying Heisenbugs Causes.
+
+\newpage
+
+\section{Methodological Approach}
+The thesis is composed of two parts: theoretical and practical.
+
+\textbf{Formalization in a theorem prover}
+
+\begin{enumerate}
+    \item 
+\end{enumerate}
+
+\textbf{Tool for detecting causes}
+
+\newpage
+
+\section{Structure of the Work}
+
+\begin{enumerate}
+    \item Introduction
+    \item Preliminaries
+    \begin{enumerate}
+        \item Coq / Lean as a theorem prover
+        \item Heisenbugs Causes (Scheduler, Distributed systems)
+    \end{enumerate}
+    \item Formalization of Heisenbugs Causes in Coq
+    \begin{enumerate}
+        \item Choosing correct types
+        \item Translate definitions
+        \item Proving Theorems
+    \end{enumerate}
+    \item Test based Tool for detecting Heisenbugs Causes
+    \begin{enumerate}
+        \item concurrency (\textcolor{red}{is it the same as scheduling?})
+        \item other cause TBD.
+    \end{enumerate}
+    \item Model checking support
+    \item Conclusion
+\end{enumerate}
+
+\newpage
+
+\section{State-of-the-Art}
+There is P Program that can detect a Heisenbugs but cannot determin the cause??? (\textcolor{red}{not sure})
+\newpage
+
+\section{Relevance to the Curricula of Logic and Computation}
+To be continued
+\newpage
+
+\begin{thebibliography}{9}
+\bibitem{mainart}
+A Formalization of Heisenbugs and Their Causes
+\end{thebibliography}
+
+\end{document}
