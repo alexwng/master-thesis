@@ -1,10 +1,13 @@
 \documentclass[12pt, a4paper]{article}
 \usepackage[margin=2cm]{geometry}
 \usepackage{xcolor}
+\usepackage{todonotes}
 \usepackage[colorlinks=true, 
             linkcolor=blue,
-            citecolor=blue,
+            citecolor=green,
             pdftitle={Master Thesis Proposal}]{hyperref}
+
+\newcommand{\textrosu}[1]{\textcolor{red}{#1}}
 
 \title{
     \textbf{Master Thesis Proposal}\\
@@ -24,9 +27,9 @@
 
 \section{Motivation \& Problem Statement}
 
-\textcolor{red}{Model checking vs test, what is it an over approx, beeccause I know it's cause and its not minimal?, what to do with other mechanism}
+\textrosu{Model checking vs test, what is it an over approx, beeccause I know it's cause and its not minimal?, what to do with other mechanism}
 
-In any program there is a bug, and this bug can be of two types, determnistic or non deterministic. The deeteerministc one is easy to to debug, but the more problematic are the non deterministic. Those kind of bug can pass a test, and without any change can fail the test, and those kind of bugs are very hard to find and also problematic.
+In any program there is a bug, and this bug can be of two types, determnistic or non deterministic. The deeteerministc one is easy to to debug, but the more problematic are the non deterministic. Those kind of bug can pass a test, and without any change can fail the test, and those kind of bugs are very hard to find and also problematic. \cite{mainart}
 
 Thus, we want to find a way in which we can determin the occurence of succh a bug, and also try to fix it.
 
@@ -88,6 +91,7 @@ To be continued
 \newpage
 
 \begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
 \bibitem{mainart}
 A Formalization of Heisenbugs and Their Causes
 \end{thebibliography}
