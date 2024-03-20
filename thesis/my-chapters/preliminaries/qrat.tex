@@ -1,0 +1,56 @@
+\subsection{QRAT Proof System}
+
+The main objective of this work, is to provide a QRAT proof for an input PCNF, where QRAT is derived from the quantified circuit of the PCNF. Thus, we dedicate this section to provide the prerequisite for a QRAT proof.
+
+The QRAT proof system \stodo{...}
+
+\begin{definition}[Outer Resolvent \cite{handbook}]
+    The \textbf{outer resolvent} of clauses $C \lor l$ and $D \lor \overline{l}$ on literal $l$ w.r.t. qunatifiers $\Pi$ is:
+    \[ \text{OR}(\Pi, C \lor l, D \lor \overline{l}, l) = C \cup \{k \mid k \in D, k \leq_\Pi l, k \not= \overline{l}\}, \text{for quant}(\Pi, l) = \exists,  \]
+    and:
+    \[ \text{OR}(\Pi, C \lor l, D \lor \overline{l}, l) = (C \backslash \{l\}) \cup \{k \mid k \in D, k \leq_\Pi l, k \not= \overline{l}\}, \text{for quant}(\Pi, l) = \forall.  \]
+
+\end{definition}
+
+\begin{example}
+    Given $\Pi = \forall x_1 x_2 \exists y_1y_2 \forall x_3 x_4$.
+    
+    For $C = (x_2 \lor x_4 \lor y_1), D = (x_1 \lor x_3 \lor \overline{y_1})$, with the existential quantifier $y_1$ as the pivot, we get OR $=(x_2 \lor x_4 \lor y_1 \lor x_1)$.
+
+    For $C = (y_1 \lor y_2 \lor x_1), D = (x_2 \lor \overline{x_1})$, with the universal quantifier $x_1$ as the pivot, we get OR $=(y_1 \lor y_2 \lor x_2)$.
+\end{example}
+
+\begin{definition}[Implies via Unit Propagation \cite{handbook}]
+    A propositional formula $\psi$ \textbf{implies via unit propagation} a clause $C$, denoted by $\psi \vdash_1 C$, 
+    
+    iff applying unit propagation on $\psi \land \overline{C}$ we can derive empty clause $\bot$. 
+\end{definition}
+
+\begin{example}
+    Given $\psi = (\overline{a} \lor b) \land (\overline{c} \lor d) \land (\overline{c} \lor \overline{d})$ and the clause $C = (a \lor b)$. \stodo{continue}
+\end{example}
+
+\begin{definition}[QRAT \cite{handbook}]
+    A clause $C$ has \textbf{QRAT on literal} $l \in C$ w.r.t. QBF $\Pi\psi$, iff for all $D \in \psi$ with $\overline{l} \in D$:
+    \[ \psi \vdash_1 \text{OR}(\Pi, C, D, l). \]
+\end{definition}
+
+\begin{example}
+    \stodo{continue}
+\end{example}
+
+With the QRAT definition in place, in order to make use of it we use the following theorems, from \cite{qrat}, that help us to transform a QBF in a satisfiable equivalent QBF:
+
+\begin{theorem}[QRAT for existential \cite{qrat}]
+    Given a QBF $\phi = \Pi.\psi$ and a clause $C \in \psi$ with QRAT on existential literal $l \in C$ w.r.t. QBF $\phi' = \Pi'.(\psi \backslash \{C\})$, where $\Pi'$ is adapted for $(\psi \backslash \{C\})$. Then $\phi$ and $\phi'$ are equisatisfiable. 
+\end{theorem}
+
+\begin{theorem}[QRAT for universal \cite{qrat}]
+    Given a QBF $\phi = \Pi.\psi$ and a clause $C \in \psi$ with QRAT on universal literal $l \in C$ w.r.t. QBF $\Pi.(\psi \backslash \{C\})$. Then $\phi$ and $\Pi.(\psi \backslash \{C\} \cup \{C \backslash \{l\}\})$ are equisatisfiable. 
+\end{theorem}
+
+\stodo{speak whats with them}
+
+\stodo{EUR}
+
+\stodo{the proof system cheking}

@@ -1,0 +1,83 @@
+\subsection{QBF}
+
+The quantified Boolean formula is an extension of the propositional Boolean formula with quantified variables. For example, $(x_1 \lor x_2 \land x_3) \to x_4$ is a propositional formula whilst $\forall x_1x_3 \exists x_2x_4(x_1 \lor x_2 \land x_3) \to x_4$ is the prior formula quantified.
+
+Worth mentioning is that, every propositional formula can be represented as a QBF, by existentially quantified the variables, from $x_1 \lor x_2$ to $\exists x_1x_2 (x_1 \lor x_2)$.
+
+In this section, the definition for QBF will be given in the prenex form, where all the quantification appear before a quantifier free formula named matrix. The matrix, as well, can be given in a special form, this will be conjunctive normal form. Any generic QBF can be transformed in the prenex conjunctive normal form. In this chapter, we will present only the transformation of the matrix in CNF in section \ref{pre:tseitin} using Tseitin transformation.
+
+\begin{definition}[Literal \cite{handbook}]
+    A \textbf{literal} is a Boolean variable $x$ or its negation $\overline{x}$. Let the function \textbf{var}$(l) = x$.
+\end{definition}
+
+\begin{example}
+    In formula $(x \lor \overline{y} \land z)$ the literals are $\{ x, \overline{y}, z \}$. var$(\overline{y}) = y$. If we want the negation of the literal $l = \overline{y}$, we will have $\overline{l} = y$. Also, $x \lor \overline{y}$ is not a literal because it is the conjunction of two literals.
+\end{example}
+
+\begin{definition}[Clause \cite{handbook}]
+    A \textbf{clause} is a disjunction of literals.
+\end{definition}
+
+\begin{example}
+    $(x_1 \lor \overline{x_2} \lor x_3)$ is a clause. But $(y_1 \lor \overline{y_2} \land y_3)$ is not because it contains an and operator, neither $(z_1 \lor (\overline{z_2} \land z_3))$ because the second term is not a literal.
+\end{example}
+
+A clause can also be represented as a set, $(x_1 \lor \overline{x_2} \lor x_3)$ to $\{ x_1, \overline{x_2}, x_3 \}$. This representation is useful for computer programs due to its processing as a list.
+
+\begin{definition}[Cube \cite{handbook}]
+    A \textbf{cube} is a conjunction of literals.
+\end{definition}
+
+\begin{example}
+    $(x_1 \land \overline{x_2} \land \overline{x_3})$ is a cube. Whilst, $(y_1 \land (\overline{y_2} \lor \overline{y_3})), (x_1 \to \overline{x_2} \land \overline{z_3})$ are not.
+\end{example}
+
+\begin{definition}[CNF \cite{handbook}]
+    A propositional formula is in \textbf{conjunctive normal form} if it is a conjunction of clauses.
+\end{definition}
+
+\begin{example}
+    $x_1 \land (x_1 \lor x_2) \land (x_1 \lor x_3) \land (x_2 \lor x_3)$ is in conjunctive normal form.
+\end{example}
+
+\begin{definition}[QBF in PCNF \cite{handbook}]\label{def:qbf}
+    A \textbf{quantified Boolean formula} in \textbf{prenex conjunctive normal form} is of form:
+    \[ \Pi\psi \]
+    , which consists of a CNF $\psi$ called \textbf{matrix}, and a \textbf{prefix} $\Pi = Q_1X_1\dots Q_kX_k$, with $Q_i \in \{ \exists, \forall \}$, $Q_i \not= Q_{i+1}$, and $X_i$ pairwise disjoint sets of variables.
+\end{definition}
+
+\begin{example}
+    $\forall x \exists y (x \lor y)$ is a QBF in PCNF. A QBF that is not a PCNF can be $\forall x (x) \to \exists y (y)$. Also, it is not allowed to have two consecutive quantifiers of the same time $\forall x \forall y$, instead $\forall x y$ should be used.
+\end{example}
+
+\begin{definition}[Qunatifier Block \cite{handbook}]
+    A \textbf{quantifier block} is $Q_iX_i$ (from definition \ref{def:qbf}). In plus, $Q_1X_1$ is the \textbf{outermost quantifier block} and $Q_kX_k$ is the \textbf{innermost quantifier block}.
+
+    A variable $x$ is quantified at \textbf{level} $i$, if $x \in X_i$ and denoted by lv$(x) = i$. We can extend it for literals with lv$(l) = \text{lv(var}(x))$. Furthermore, we can define \textbf{quant}$(\Pi,l) = Q_i$.
+\end{definition}
+
+\begin{example}
+    Let's have the prefix $\Pi = \exists ab \forall uv \exists xyz$, then the outermost block is $\exists ab$, the innermost block is $\exists xyz$, lv$(u) = 2$, and quant$(\Pi, v) = \forall$.
+\end{example}
+
+\begin{definition}[Substitution \cite{handbook}]
+    $\Pi\psi[t/x]$ denotes the replacement of $x$ by $t$.
+\end{definition}
+
+\begin{example}
+    $\forall xy \exists z (x \lor y) \land z[1/z]$ we get $\forall xy \exists z (x \lor y) \land 1$.
+\end{example}
+
+\begin{definition}[QBF Semantics \cite{handbook}]\label{def:semantics}
+    A QBF $\forall x \Pi \psi$ is true iff $\Pi \psi[0/x]$ and $\Pi \psi[1/x]$ are true. A QBF $\exists x \Pi \psi$ is true iff $\Pi \psi[0/x]$ or $\Pi \psi[1/x]$ is true.
+\end{definition}
+
+\begin{example}
+    $\forall x (x \lor \overline{x})$ is a true QBF, we have $(0 \lor \overline{0})$ which evaluates to true and $(1 \lor \overline{1})$ which also evaluates to true. Another true QBF is $\exists x \forall y (x \lor y)$, because it will be true, when we assign $x$ to 1. A false QBF can be $\forall x (x)$, because we can take $[0/x]$ producing a false, and the other case with $[1/x]$ doesn't matter because $\forall$ quantifier requires both cases to be true.
+\end{example}
+
+\begin{definition}[Proof System \cite{handbook}]
+    \textrosu{CE E ASTA? rng(f) Didn't like thte definiton in citaiton need to find another and exemplify with a simple axiom and inference rule.}
+\end{definition}
+
+sat, qsat, equisat, free variable, level sign of prefix, assignment, unit propagation, RAT for propositional

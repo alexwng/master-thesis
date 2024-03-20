@@ -1,0 +1,31 @@
+\section{QCIR Reconstruction Certification}
+
+In this chapter, we present the main aim of the work: quantified circuit reconstruction certification. Given a QBF $\phi$ in PCNF and a QCIR converter, our goal is to verify that the output of the converter is equisatisfiable with the given input. Restricting our approach only for the false instances of QBF, in order to check the satisfiable equivalence we propose the following solution: after we apply the converter, and get the formula $\phi_\text{QCIR}$, we can reconstruct a refutation proof for $\phi$ from $\phi_\text{QCIR}$ refutation proof. This way, with the initial proof reconstruction, we can reassure the sound of the QCIR converter.
+
+In the following, we assume that the input formula is false, and a QCIR converter gives a circuit that uses variables from the input without addition of other new variables.
+
+In the first section \stodo{write after sections done}
+
+\subsection{Certification procedure}
+
+\begin{algorithm}[H]
+\caption{Procedure for initial proof reconstruction from QCIR conversion.}\label{alg:cap}
+\begin{algorithmic}[1]
+\Require False PCNF: $\phi$, QCIR converter procedure: \textsc{QcirConv}
+\Ensure QRAT refutation proof P for $\phi$
+\Procedure{GetInitialProof}{$\phi$, \textsc{QcirConv}}
+\State $\phi_\text{QCIR} \gets$ \Call{QcirConv}{$\phi$}
+\State $\phi_\text{Tseitin} \gets$ \Call{TseitinOfQcir}{$\phi_\text{QCIR}$}
+\State $P_\text{Q-Res} \gets$ \Call{QBFSolver}{$\phi_\text{Tseitin}$}
+\State $P_\text{QRAT} \gets$ \Call{QresToQrat}{$P_\text{Q-Res}$}
+\State $P_\text{Initial-QRAT} \gets$ \Call{InitialQratReconstruction}{$\phi, \phi_\text{Tseitin}, P_\text{QRAT}$}
+\State \Return $P_\text{Initial-QRAT}$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+In algorithm \ref{alg:cap} s
+
+\subsection{tseitin transform}
+\subsection{Getin qrat proof}
+\subsection{verification}

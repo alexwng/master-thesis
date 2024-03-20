@@ -1,0 +1,4 @@
+equisatisfiable
+Tseitin
+satisfiable
+unsatisfiable

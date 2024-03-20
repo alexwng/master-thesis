@@ -1,0 +1,77 @@
+#QCIR-G14
+
+#VarName   2 : v15
+#VarName   4 : v29
+#VarName   6 : v14
+#VarName   8 : v28
+#VarName  10 : v13
+#VarName  12 : v27
+#VarName  14 : v12
+#VarName  16 : v26
+#VarName  18 : v11
+#VarName  20 : v25
+#VarName  22 : v10
+#VarName  24 : v24
+#VarName  26 : v9
+#VarName  28 : v23
+#VarName  30 : v8
+#VarName  32 : v22
+#VarName  34 : v7
+#VarName  36 : v21
+#VarName  38 : v6
+#VarName  40 : v20
+#VarName  42 : v5
+#VarName  44 : v19
+#VarName  46 : v4
+#VarName  48 : v18
+#VarName  50 : v3
+#VarName  52 : v17
+#VarName  54 : v2
+#VarName  56 : v16
+
+exists(2)
+forall(4)
+exists(6)
+forall(8)
+exists(10)
+forall(12)
+exists(14)
+forall(16)
+exists(18)
+forall(20)
+exists(22)
+forall(24)
+exists(26)
+forall(28)
+exists(30)
+forall(32)
+exists(34)
+forall(36)
+exists(38)
+forall(40)
+exists(42)
+forall(44)
+exists(46)
+forall(48)
+exists(50)
+forall(52)
+exists(54)
+forall(56)
+output(132)
+
+102 = or(-54, 54)
+104 = or(46, 48, -50, -52, -54)
+106 = or(42, 44, -46, -48, -50)
+108 = or(38, 40, -42, -44, -46)
+110 = or(34, 36, -38, -40, -42)
+112 = or(30, 32, -34, -36, -38)
+114 = or(26, 28, -30, -32, -34)
+116 = or(22, 24, -26, -28, -30)
+118 = or(18, 20, -22, -24, -26)
+120 = or(14, 16, -18, -20, -22)
+122 = or(10, 12, -14, -16, -18)
+124 = or(6, 8, -10, -12, -14)
+126 = or(2, 4, -6, -8, -10)
+128 = or(54, -102)
+130 = or(50, 52, -54, -56, -102)
+132 = and(-2, 104, 106, 108, 110, 112, 114, 116, 118, 120, 122, 124, 126, 128, 130)
