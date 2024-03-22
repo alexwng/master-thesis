@@ -1,12 +1,24 @@
-\section{QCIR Reconstruction Certification}
+\section{Quantified circuit Reconstruction Certification}
 
 In this chapter, we present the main aim of the work: quantified circuit reconstruction certification. Given a QBF $\phi$ in PCNF and a QCIR converter, our goal is to verify that the output of the converter is equisatisfiable with the given input. Restricting our approach only for the false instances of QBF, in order to check the satisfiable equivalence we propose the following solution: after we apply the converter, and get the formula $\phi_\text{QCIR}$, we can reconstruct a refutation proof for $\phi$ from $\phi_\text{QCIR}$ refutation proof. This way, with the initial proof reconstruction, we can reassure the sound of the QCIR converter.
 
 In the following, we assume that the input formula is false, and a QCIR converter gives a circuit that uses variables from the input without addition of other new variables.
 
-In the first section \stodo{write after sections done}
+In the first section we present the detailed steps for the main procedure, followed by sections that prove soundness of our procedure.
 
-\subsection{Certification procedure}
+\subsection{Certified QCIR reconstruction by initial proof}
+
+Before presenting the proof reconstruction we need to have a concise definition of what a QDIMACS to QCIR reconstruction program does.
+
+\begin{definition}[QCIR reconstruction]\label{qcir:recon}
+    A $\phi_\text{QCIR}$, in QCIR format, is a \textbf{QCIR reconstruction} of $\phi$, in PCNF format, iff there exists an assignment of the remaining variables, that are found in the $\phi$ but not in $\phi_\text{QCIR}$, to a gate, such that $\models \psi \leftrightarrow \psi_\text{QCIR}$, where $\psi_\text{QCIR}, \psi$ are the matrices of $\phi_\text{QCIR}, \phi$, respectively. In other words, the reconstruction comes from the fact that some variables can be deterministically derived from evaluation of the remaining ones.
+\end{definition}
+
+\begin{example}
+    In the PCNF $\forall x y \exists t (x \lor y \lor \overline{t}) \land (\overline{x} \lor t) \land (\overline{y} \lor t)$, we can see $t$ is a Tseitin variable for an OR-gate, thus a reconstruction can remove this added variable and keep it as $\forall x y \underbrace{(x \lor y)}_g$. And we can see that we can assign $t = g$, and the logical equivalence of the matrices is preserved.
+\end{example}
+
+With the definition \ref{qcir:recon} we want to capture the notion of the reconstruction of the formula where some existential quantified variables can be computed to the exact value such that the formulas are logical equivalent, and have a formula that uses less quantified variables.
 
 \begin{algorithm}[H]
 \caption{Procedure for initial proof reconstruction from QCIR conversion.}\label{alg:cap}
@@ -24,8 +36,100 @@ In the first section \stodo{write after sections done}
 \end{algorithmic}
 \end{algorithm}
 
-In algorithm \ref{alg:cap} s
+In algorithm \ref{alg:cap}, we present the main procedure for getting a refutation proof for a given QBF using its circuit reconstruction form. First step is the application of the QCIR reconstruction on the initial QBF and get a circuit QBF $\phi_\text{QCIR}$, respecting definition \ref{qcir:recon}. In the second step, we generate the PCNF of the QBF using Tseitin transformation, this way we introduce a variable for each of the gate, but more details will be presented in a dedicated section \ref{tseitin:qcir}.  In the third step, we apply a QBF solver based on QCDCL on the new formula, and this will produce a Q-Resolution proof for the $\phi_\text{QCIR}$ in PCNF. In the following step, with the Q-Resolution proof we can transform it in a QRAT proof, detailed in section \ref{qrat:fromqres}. In the last step, with the initial QBF, the QCIR PCNF formula and its QRAT proof, we can derive a QRAT proof for the initial formula.
 
-\subsection{tseitin transform}
-\subsection{Getin qrat proof}
-\subsection{verification}
+With the initial formula deducted from the QCIR we can use it as a certification for QCIR conversion, but more will be explained in the section \ref{qrat:init}.
+
+\subsection{Tseitin transformation of QCIR}\label{tseitin:qcir}
+
+\begin{algorithm}[H]
+\caption{PCNF from QCIR using Tseitin transformation procedure.}\label{alg:tseitin}
+\begin{algorithmic}[1]
+\Require QCIR formula: $\phi_\text{QCIR}$
+\Ensure Satisfiable equivalent PCNF form of input: $\phi_\text{Tseitin}$
+\Procedure{TseitinOfQcir}{$\phi_\text{QCIR}$}
+\State $\phi_\text{Tseitin} \gets$ empty formula
+\For {gate in gates}
+    \State $\phi_\text{Tseitin} \gets \phi_\text{Tseitin} \cup$ \Call{Tseitin}{gate}
+\EndFor
+\State $\phi_\text{Tseitin} \gets \phi_\text{Tseitin} \cup t_\text{output}$\Comment{Tseitin encoding variable of output gate}
+\State \Return $\phi_\text{Tseitin}$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+In algorithm \ref{alg:tseitin}, we present the procedure that takes as an input a formula in QCIR and output the PCNF satisfiable equivalence of it. The procedure starts by initializing an empty formula where we will append clauses. Then, for each gate we introduce a variable $t$, and write the CNF formula of the ($t \leftrightarrow $ gate), that is the role of \textsc{Tseitin} function. For simplicity, if we have a gate that takes multiple inputs, we break down the formula for each 2 variables with auxiliary Tseitin variables, for example having the gate $a \land b \land c \land d$ we will use $t_1$ for $a \land b$, then use $t_1 \land c$ for $t_2$, etc. After we translate all the gates, to keep a CNF that is equisatisfiable with a given formula we also need to add the last Tseitin variable as a clause. As for the prefix, the prefix of $\phi_\text{Tseitin}$ will be the same as $\phi_\text{QCIR}$, and each addition of a Tseitin variable will be added in the innermost existential block.
+
+For the later use for proving the main result of the transformation, let's formulate the claim that states that the procedure \ref{alg:tseitin} is sound, and produce what we want.
+
+\begin{claim}
+    Given a QCIR $\phi_\text{QCIR}$ the algorithm \ref{alg:tseitin} produce a satisfiable equivalent PCNF $\phi_\text{Tseitin}$.
+\end{claim}
+
+\begin{proof}
+    \stodo{need to think}
+\end{proof}
+
+\subsection{QRAT proof from Q-Resolution proof}\label{qrat:fromqres}
+
+\begin{algorithm}[H]
+\caption{Q-Resolution to QRAT proof format.}\label{alg:qrat}
+\begin{algorithmic}[1]
+\Require Q-Resolution proof of the $\phi_\text{Tseitin}$: $P_\text{Q-Res}$
+\Ensure QRAT proof format from Q-resolution: $P_\text{QRAT}$
+\Procedure{QresToQrat}{$P_\text{Q-Res}$}
+\State $P_\text{QRAT} \gets$ empty list
+\For {line in $P_\text{Q-Res}$}\Comment{line is of form (resolvent, premise1, premise2)}
+    \State $P_\text{QRAT}.$append(resolvent)
+    \While{resolvent highest level of a variable is universal}
+    \State $P_\text{QRAT}.$append(universal reduction)
+    \EndWhile
+\EndFor
+\State \Return $P_\text{QRAT}$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+In algorithm \ref{alg:qrat}, from a Q-resolution proof we produce a QRAT proof. We start by initializing an empty list where we will store each step of the QRAT proof. Then we iterate through all the lines in the Q-resolution proof. Each of this line contains the resolvent and the premises it came from. From this line, we are only interested in the resolvent, because the premises should already be present at this step of the proof (either a resolvent that was added before or as a clause in the initial formula). In a QRAT proof the QRAT literal is on the first position, thus we need to see what literal we put in the resolvent, but of the claim \ref{qrat:resolvent} it doesn't matter. After that, we need to check if we can apply the universal reduction, thus we check the variable that have the highest level and see if it is universal and apply the respective rule.
+
+In addition, it will be important for our implementation to know what variable is the pivot in the Q-resolution proof. But this can be easily found using the claim \ref{qrat:uniquepivot}, that states only one pivot it's available between two premises.
+
+\begin{claim}\label{qrat:uniquepivot}
+    Given a proof line from Q-resolution proof that is formed of two premises and their resolvent, only one pivot is available between the premises.
+\end{claim}
+
+\begin{proof}
+    Suppose two literals or more are available as pivot for the resolution rule, having the following premises $C \lor a \lor b$ and $D \lor \overline{a} \lor \overline{b}$ this cannot be the case, because if we apply the resolution rule on one literal the other one will produce a tautology and is not allow by the rule, false. Thus, our supposition was false, and between 2 premises there are only one pivot.
+\end{proof}
+
+\begin{claim}\label{qrat:resolvent}
+    Every literal from a resolvent has the QRAT property.
+\end{claim}
+
+\begin{proof}
+    Our premises are of form $C \lor p$ and $D \lor \overline{p}$. Our resolvent is $C \lor D$. We want to check that $C \lor D$ has QRAT on an arbitrary literal $l$. Thus, we want to check that we can use implicit unit propagation to derive the outer resolvent of $C \lor D$ and another clause that has $\overline{l}$. But, the outer resolver already includes $C \lor D$ and if we use the negated literals from this clause, we can apply unit propagation on the premises and derive $p$ and $\overline{p}$, thus producing the $\bot$ showing that we can apply QRAT on any literal of the resolvent.
+\end{proof}
+
+\subsection{Initial QRAT reconstruction}\label{qrat:init}
+
+\begin{algorithm}[H]
+\caption{QRAT proof for a QBF from its QCIR.}\label{alg:init}
+\begin{algorithmic}[1]
+\Require Q-Resolution proof of the $\phi_\text{Tseitin}$: $P_\text{Q-Res}$
+\Ensure QRAT proof format from Q-resolution: $P_\text{QRAT}$
+\Procedure{QresToQrat}{$P_\text{Q-Res}$}
+% \State $\phi_\text{Tseitin} \gets$ empty formula
+% \For {gate in gates}
+%     \State $\phi_\text{Tseitin} \gets \phi_\text{Tseitin} \cup$ \Call{Tseitin}{gate}
+% \EndFor
+% \State $\phi_\text{Tseitin} \gets \phi_\text{Tseitin} \cup t_\text{output}$\Comment{Tseitin encoding variable of output gate}
+\State \Return $P_\text{QRAT}$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+In algorithm \ref{alg:init}, 
+
+\begin{claim}
+    s
+\end{claim}

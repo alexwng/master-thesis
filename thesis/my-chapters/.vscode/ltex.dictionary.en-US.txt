@@ -2,3 +2,4 @@ equisatisfiable
 Tseitin
 satisfiable
 unsatisfiable
+resolvent
